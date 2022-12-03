@@ -29,18 +29,22 @@ RpsResult = JudgeRpsResult(PlayerHand, DealerHand)
 
 if RpsResult == 0 then
 	while RpsResult == 0 do
-	puts DrawMessage
-	PlayerHand = MakePlayerHand()
-	puts StartPlayingMessage
-	DealerHand = MakeDealerHand()
-	PlayerHandString = RockpaperscissorsStringMaker(PlayerHand)
-	DealerHandString = RockpaperscissorsStringMaker(DealerHand)
-	puts RpsMonitorMessage
-	RpsResult = JudgeRpsResult(PlayerHand, DealerHand)
+		puts DrawMessage
+		PlayerHand = MakePlayerHand()
+		puts StartPlayingMessage
+		DealerHand = MakeDealerHand()
+		PlayerHandString = RockpaperscissorsStringMaker(PlayerHand)
+		DealerHandString = RockpaperscissorsStringMaker(DealerHand)
+		puts RpsMonitorMessage
+		RpsResult = JudgeRpsResult(PlayerHand, DealerHand)
+	end
 end
 
 if RpsResult == 1 then
 	puts FingerGameMessage
+elsif RpsResult == 2 
+	puts FingerGameMessage
+end
 
 def MakeDealerHand
 	return DealerHand = rand(0..2)
@@ -63,19 +67,21 @@ def RpsStringMaker(Hand)
 
 
 def FingerGameStringMaker(Direction)
-case Direction
-when 0
-	DirectionString = "上"
-when 1
-	DirectionString = "下"
-when 2
-	DirectionString = "左"
-when 3
-	DirectionString = "右"
+	case Direction
+	when 0
+		DirectionString = "上"
+	when 1
+		DirectionString = "下"
+	when 2
+		DirectionString = "左"
+	when 3
+		DirectionString = "右"
+	end
+	retrun DirectionString
 end
-retrun DirectionString
 
 def JudgeRpsResult(PlayerHand, DealerHand)
+	# じゃんけんの勝敗決定の法則性をもとに勝敗を判定
 	RpsResult = (PlayerHand - DealerHand + 3) % 3
 	return RpsResult
 end
