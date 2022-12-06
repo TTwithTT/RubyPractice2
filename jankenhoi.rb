@@ -4,24 +4,27 @@ DealerHand = nil
 PlayerHand = nil
 DealerHandString = nil
 PlayerHandString = nil
+
 FingerResult = 0
 DealerDirection = nil
 PlayerDirection = nil
 DealerDirectionString = nil
 PlayerDirectionString = nil
+
 IntroMessage = "じゃんけん\n0(グー)1(チョキ)2(パー)3(戦わない)"
 StartPlayingMessage = "ホイ！"
 DrawMessage = "あいこで...\n0(グー)1(チョキ)2(パー)3(戦わない)"
 FingerGameMessage = "あっち向いて～\n0(上)1(下)2(左)3(右)"
 RpsMonitorMessage = "----------\nあなた：#{PlayerHandString}を出しました\n相手：#{DealerHandString}を出しました\n----------"
-MonitorMessage = "----------\nあなた：#{PlayerDirectionString}\n相手：#{DealerDirectionString}\n----------"
-
+FingerMonitorMessage = "----------\nあなた：#{PlayerDirectionString}\n相手：#{DealerDirectionString}\n----------"
+WinnerMessage = "あなたの勝ちです"
+LooserMessage = "あなたの負けです"
 
 puts IntroMessage
 
-PlayerHand = MakePlayerHand()
+MakePlayerHand()
 puts StartPlayingMessage
-DealerHand = MakeDealerHand()
+MakeDealerHand()
 PlayerHandString = RockpaperscissorsStringMaker(PlayerHand)
 DealerHandString = RockpaperscissorsStringMaker(DealerHand)
 puts RpsMonitorMessage
@@ -33,40 +36,50 @@ if RpsResult == 0 then
 		PlayerHand = MakePlayerHand()
 		puts StartPlayingMessage
 		DealerHand = MakeDealerHand()
-		PlayerHandString = RockpaperscissorsStringMaker(PlayerHand)
-		DealerHandString = RockpaperscissorsStringMaker(DealerHand)
+		RpsStringMaker(PlayerHand)
+		RpsStringMaker(DealerHand)
 		puts RpsMonitorMessage
-		RpsResult = JudgeRpsResult(PlayerHand, DealerHand)
+		JudgeRpsResult(PlayerHand, DealerHand)
 	end
 end
 
 if RpsResult == 1 then
-	puts FingerGameMessage
+	FingerGame()
+	puts WinnerMessage
 elsif RpsResult == 2 
-	puts FingerGameMessage
+	FingerGame()
+	puts LooserMessage
+else
 end
 
 def MakeDealerHand
-	return DealerHand = rand(0..2)
+	return rand(0..2)
 end
 
 def MakePlayerHand
-	return PlayerHand = gets.to_i
+	return gets.to_i
 end
 
 def RpsStringMaker(Hand)
 	case Hand 
 	when 0
-		HandString = "グー"
+		return "グー"
 	when 1
-		HandString = "チョキ"
+		return "チョキ"
 	when 2
-		HandString = "パー"
+		return "パー"
 	end
-	return HandString
+end
 
+def MakeDealerDirection
+	return rand(0..3)
+end
 
-def FingerGameStringMaker(Direction)
+def MakePlayerDirection
+	return gets.to_i
+end
+
+def FingerStringMaker(Direction)
 	case Direction
 	when 0
 		DirectionString = "上"
@@ -77,12 +90,26 @@ def FingerGameStringMaker(Direction)
 	when 3
 		DirectionString = "右"
 	end
-	retrun DirectionString
 end
 
-def JudgeRpsResult(PlayerHand, DealerHand)
+def FingerGame()
+	puts FingerGameMessage
+	while FingerResult == 0 do
+		MakePlayerDirection()
+		MakeDealerDirection()
+		JudgeFingerResult(PlayerDirection, DealerDirection)
+		puts FingerMoniterMessage
+	end
+end
+
+def JudgeRpsResult(PlayerHandInt, DealerHandInt)
 	# じゃんけんの勝敗決定の法則性をもとに勝敗を判定
-	RpsResult = (PlayerHand - DealerHand + 3) % 3
-	return RpsResult
+	RpsResult = (PlayerHandInt - DealerHandInt + 3) % 3
 end
 
+def JudgeFingerResult(PlayerDirectionInt, DealerDirectionInt)
+	if PlayerDirectionInt == DealerDirectionInt then
+		FingerResult = 1
+	else
+	end
+end
