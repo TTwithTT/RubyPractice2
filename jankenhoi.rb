@@ -124,8 +124,6 @@ while matchResult == 0 do
 		else
 		end
 	end
-	
-	
 
 	# if player wants to quit
 	if playerHand == 3 then
