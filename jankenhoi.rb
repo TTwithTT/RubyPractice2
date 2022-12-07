@@ -19,7 +19,7 @@ rpsMonitorMessage = nil
 fingerMonitorMessage = nil
 WinnerMessage = "あなたの勝ちです"
 LooserMessage = "あなたの負けです"
-QuitMessage = "ゲームを終了する"
+QuitMessage = "ゲームを終了しました"
 
 def MakeDealerHand
 	return rand(0..2)
@@ -77,16 +77,18 @@ end
 # first rsp match
 puts IntroMessage
 playerHand = MakePlayerHand()
-puts StartPlayingMessage
-dealerHand = MakeDealerHand()
-rpsResult = JudgeRpsResult(playerHand, dealerHand)
+if !(playerHand == 3) then
+	puts StartPlayingMessage
+	dealerHand = MakeDealerHand()
+	rpsResult = JudgeRpsResult(playerHand, dealerHand)
 
-playerHandString = RpsStringMaker(playerHand)
-dealerHandString = RpsStringMaker(dealerHand)
-puts rpsMonitorMessage = "----------\nあなた：#{playerHandString}を出しました\n相手：#{dealerHandString}を出しました\n----------"
-
+	playerHandString = RpsStringMaker(playerHand)
+	dealerHandString = RpsStringMaker(dealerHand)
+	puts rpsMonitorMessage = "----------\nあなた：#{playerHandString}を出しました\n相手：#{dealerHandString}を出しました\n----------"
+else
+end
 #rps tied
-while rpsResult == 0 && playerHand != 3 do
+while rpsResult == 0 && !(playerHand == 3) do
 	puts DrawMessage
 	playerHand = MakePlayerHand()
 	puts StartPlayingMessage
@@ -99,7 +101,7 @@ while rpsResult == 0 && playerHand != 3 do
 end
 
 # rps won/lost
-while fingerResult == 0 playerHand != 3 do
+while fingerResult == 0 && !(playerHand == 3) do
 	puts FingerGameMessage
 	playerDirection = MakePlayerDirection()
 	dealerDirection = MakeDealerDirection()
@@ -120,4 +122,5 @@ end
 # if player wants to quit
 if playerHand == 3 then
 	puts QuitMessage
+end
 
