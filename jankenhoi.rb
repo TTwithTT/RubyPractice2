@@ -15,10 +15,11 @@ IntroMessage = "じゃんけん\n0(グー)1(チョキ)2(パー)3(戦わない)"
 StartPlayingMessage = "ホイ！"
 DrawMessage = "あいこで...\n0(グー)1(チョキ)2(パー)3(戦わない)"
 FingerGameMessage = "あっち向いて～\n0(上)1(下)2(左)3(右)"
-RpsMonitorMessage = "----------\nあなた：#{playerHandString}を出しました\n相手：#{dealerHandString}を出しました\n----------"
-FingerMonitorMessage = "----------\nあなた：#{playerDirectionString}\n相手：#{dealerDirectionString}\n----------"
+rpsMonitorMessage = nil
+fingerMonitorMessage = nil
 WinnerMessage = "あなたの勝ちです"
 LooserMessage = "あなたの負けです"
+QuitMessage = "ゲームを終了する"
 
 def MakeDealerHand
 	return rand(0..2)
@@ -60,16 +61,6 @@ def FingerStringMaker(direction)
 	end
 end
 
-def FingerGame(fingerResult)
-	puts FingerGameMessage
-	while fingerResult == 0 do
-		MakeplayerDirection()
-		MakedealerDirection()
-		fingerResult = JudgefingerResult(playerDirection, dealerDirection)
-		puts FingerMoniterMessage
-	end
-end
-
 def JudgeRpsResult(playerHandInt, dealerHandInt)
 	# じゃんけんの勝敗決定の法則性をもとに勝敗を判定
 	return (playerHandInt - dealerHandInt + 3) % 3
@@ -83,9 +74,7 @@ def JudgeFingerResult(playerDirectionInt, dealerDirectionInt)
 	end
 end
 
-
-
-
+# first rsp match
 puts IntroMessage
 playerHand = MakePlayerHand()
 puts StartPlayingMessage
@@ -94,29 +83,41 @@ rpsResult = JudgeRpsResult(playerHand, dealerHand)
 
 playerHandString = RpsStringMaker(playerHand)
 dealerHandString = RpsStringMaker(dealerHand)
-puts RpsMonitorMessage
+puts rpsMonitorMessage = "----------\nあなた：#{playerHandString}を出しました\n相手：#{dealerHandString}を出しました\n----------"
 
+#rps tied
+while rpsResult == 0 && playerHand != 3 do
+	puts DrawMessage
+	playerHand = MakePlayerHand()
+	puts StartPlayingMessage
+	dealerHand = MakeDealerHand()
+	rpsResult = JudgeRpsResult(playerHand, dealerHand)
 
-if rpsResult == 0 then
-	while rpsResult == 0 do
-		puts DrawMessage
-		playerHand = MakePlayerHand()
-		puts StartPlayingMessage
-		dealerHand = MakeDealerHand()
-		rpsResult = JudgeRpsResult(playerHand, dealerHand)
-
-		playerHandString = RpsStringMaker(playerHand)
-		dealerHandString = RpsStringMaker(dealerHand)
-		puts RpsMonitorMessage
-	end
+	playerHandString = RpsStringMaker(playerHand)
+	dealerHandString = RpsStringMaker(dealerHand)
+	puts rpsMonitorMessage = "----------\nあなた：#{playerHandString}を出しました\n相手：#{dealerHandString}を出しました\n----------"
 end
 
-if rpsResult == 1 then
-	FingerGame()
+# rps won/lost
+while fingerResult == 0 playerHand != 3 do
+	puts FingerGameMessage
+	playerDirection = MakePlayerDirection()
+	dealerDirection = MakeDealerDirection()
+	fingerResult = JudgeFingerResult(playerDirection, dealerDirection)
+
+	puts StartPlayingMessage
+	playerDirectionString = FingerStringMaker(playerDirection)
+	dealerDirectionString = FingerStringMaker(dealerDirection)
+	puts fingerMoniterMessage = "----------\nあなた：#{playerDirectionString}\n相手：#{dealerDirectionString}\n----------"
+end
+if rpsResult == 2 then 
 	puts WinnerMessage
-elsif rpsResult == 2 
-	FingerGame()
+elsif rpsResult == 1 
 	puts LooserMessage
 else
 end
+
+# if player wants to quit
+if playerHand == 3 then
+	puts QuitMessage
 
