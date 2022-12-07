@@ -1,4 +1,5 @@
 # Rps means Rock paper scissors
+matchResult = 0
 rpsResult = 0
 dealerHand = nil
 playerHand = nil
@@ -74,53 +75,61 @@ def JudgeFingerResult(playerDirectionInt, dealerDirectionInt)
 	end
 end
 
-# first rsp match
-puts IntroMessage
-playerHand = MakePlayerHand()
-if !(playerHand == 3) then
-	puts StartPlayingMessage
-	dealerHand = MakeDealerHand()
-	rpsResult = JudgeRpsResult(playerHand, dealerHand)
-
-	playerHandString = RpsStringMaker(playerHand)
-	dealerHandString = RpsStringMaker(dealerHand)
-	puts rpsMonitorMessage = "----------\nあなた：#{playerHandString}を出しました\n相手：#{dealerHandString}を出しました\n----------"
-else
-end
-#rps tied
-while rpsResult == 0 && !(playerHand == 3) do
-	puts DrawMessage
+while matchResult == 0 do
+	# first rsp match
+	puts IntroMessage
 	playerHand = MakePlayerHand()
-	puts StartPlayingMessage
-	dealerHand = MakeDealerHand()
-	rpsResult = JudgeRpsResult(playerHand, dealerHand)
+	if !(playerHand == 3) then
+		puts StartPlayingMessage
+		dealerHand = MakeDealerHand()
+		rpsResult = JudgeRpsResult(playerHand, dealerHand)
 
-	playerHandString = RpsStringMaker(playerHand)
-	dealerHandString = RpsStringMaker(dealerHand)
-	puts rpsMonitorMessage = "----------\nあなた：#{playerHandString}を出しました\n相手：#{dealerHandString}を出しました\n----------"
+		playerHandString = RpsStringMaker(playerHand)
+		dealerHandString = RpsStringMaker(dealerHand)
+		puts rpsMonitorMessage = "----------\nあなた：#{playerHandString}を出しました\n相手：#{dealerHandString}を出しました\n----------"
+	else
+	end
+	#rps tied
+	while rpsResult == 0 && !(playerHand == 3) do
+		puts DrawMessage
+		playerHand = MakePlayerHand()
+		puts StartPlayingMessage
+		dealerHand = MakeDealerHand()
+		rpsResult = JudgeRpsResult(playerHand, dealerHand)
+
+		playerHandString = RpsStringMaker(playerHand)
+		dealerHandString = RpsStringMaker(dealerHand)
+		puts rpsMonitorMessage = "----------\nあなた：#{playerHandString}を出しました\n相手：#{dealerHandString}を出しました\n----------"
+	end
+
+	# rps won/lost
+	if fingerResult == 0 && !(playerHand == 3) then
+		puts FingerGameMessage
+		playerDirection = MakePlayerDirection()
+		dealerDirection = MakeDealerDirection()
+		fingerResult = JudgeFingerResult(playerDirection, dealerDirection)
+
+		puts StartPlayingMessage
+		playerDirectionString = FingerStringMaker(playerDirection)
+		dealerDirectionString = FingerStringMaker(dealerDirection)
+		puts fingerMoniterMessage = "----------\nあなた：#{playerDirectionString}\n相手：#{dealerDirectionString}\n----------"
+		if fingerResult == 1 then
+			if rpsResult == 2 then 
+				puts WinnerMessage
+				matchResult = 1
+			elsif rpsResult == 1 
+				puts LooserMessage
+				matchResult = 1
+			end
+		else
+		end
+	end
+	
+	
+
+	# if player wants to quit
+	if playerHand == 3 then
+		puts QuitMessage
+		matchResult = 1
+	end
 end
-
-# rps won/lost
-while fingerResult == 0 && !(playerHand == 3) do
-	puts FingerGameMessage
-	playerDirection = MakePlayerDirection()
-	dealerDirection = MakeDealerDirection()
-	fingerResult = JudgeFingerResult(playerDirection, dealerDirection)
-
-	puts StartPlayingMessage
-	playerDirectionString = FingerStringMaker(playerDirection)
-	dealerDirectionString = FingerStringMaker(dealerDirection)
-	puts fingerMoniterMessage = "----------\nあなた：#{playerDirectionString}\n相手：#{dealerDirectionString}\n----------"
-end
-if rpsResult == 2 then 
-	puts WinnerMessage
-elsif rpsResult == 1 
-	puts LooserMessage
-else
-end
-
-# if player wants to quit
-if playerHand == 3 then
-	puts QuitMessage
-end
-
